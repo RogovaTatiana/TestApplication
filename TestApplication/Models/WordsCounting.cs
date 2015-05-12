@@ -12,6 +12,8 @@ namespace TestApplication.Models
 	{
 		public void Processing(FileData file)
 		{
+			// подсчет слов в тексте
+
 			string[] stroka;
 			string fileName;
 			file.Words = new List<Word>();
@@ -48,7 +50,7 @@ namespace TestApplication.Models
 					}
 				}
 			}
-			fs.Close();
+			sr.Close();
 		}
 	}
 }

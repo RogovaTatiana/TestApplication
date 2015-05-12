@@ -168,6 +168,7 @@
     <Compile Include="Models\FileData.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\IProcessing.cs" />
+    <Compile Include="Models\ISaving.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Word.cs" />
     <Compile Include="Models\WordsCounting.cs" />
