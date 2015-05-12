@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -9,9 +10,15 @@ namespace TestApplication.Controllers
 {
 	public class HomeController : Controller
 	{
-		private readonly ISaving _saving = new FileSaving(); // можно указать другой тип сохранения
-		private readonly IProcessing _processing = new WordsCounting(); // Можно создать другой способ обработки и унаследовать его от IProcessing
+		// поля для работы с базой данных
+		static readonly ModelContainer Model = new ModelContainer();
+		static IRepository<UploadHistory> _uploadHistory = new Repository<UploadHistory>(Model);
 
+		// обработка и запись данных в файл
+		static readonly ISaving Saving = new FileSaving(); // можно указать другой тип сохранения
+		static readonly IProcessing Processing = new WordsCounting(); // Можно создать другой способ обработки и унаследовать его от IProcessing
+
+		#region StandartControllers
 		public ActionResult Index()
 		{
 			return View();
@@ -29,8 +36,10 @@ namespace TestApplication.Controllers
 			ViewBag.Message = "Your contact page.";
 
 			return View();
-		}
+		} 
+		#endregion
 
+		// Обработка загруженного файла
 		[HttpPost]
 		public ActionResult Upload()
 		{
@@ -41,13 +50,20 @@ namespace TestApplication.Controllers
 				var upload = Request.Files[file];
 				if (upload != null)
 				{
-					string fileName = System.IO.Path.GetFileName(upload.FileName);
+					string fileName = Path.GetFileName(upload.FileName);
 					upload.SaveAs(@"\Files\" + fileName);
 					newFile.FileName = fileName;
 					newFile.UploadDate = DateTime.Now;
 					newFile.FileSize = upload.ContentLength;
-					_processing.Processing(newFile);
-					_saving.Save(newFile);
+					Processing.Processing(newFile);
+					Saving.Save(newFile);
+					_uploadHistory.Insert(new UploadHistory()
+					{
+						FileName = newFile.FileName,
+						FileSize = newFile.FileSize,
+						UploadDate = newFile.UploadDate
+					});
+					_uploadHistory.SubmitAll();
 				}
 				ViewBag.Words = newFile.Words;
 			}
