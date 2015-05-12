@@ -1,0 +1,17 @@
+﻿<h3>
+	@if (ViewBag.result.Equals(""))
+	{
+	}
+	else
+	{
+		@ViewBag.result
+	}
+</h3>
+
+<p></p>
+<ul>
+	@foreach (var el in ViewBag.Words)
+	{
+		<li>@el.ToString()</li>
+	}
+</ul>

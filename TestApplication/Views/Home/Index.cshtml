@@ -1,14 +1,21 @@
 ﻿@{
     ViewBag.Title = "Home Page";
+	string fileName ="";
 }
 
 <div>
 	<input type="file" name="upload" id="uploadFile" /><br />
 	<button id="submit">Загрузить</button>
+	
+	@*<button id="count">Считать слова</button>
+	
+	
+	@Html.Hidden("fileName", @fileName)*@
+	<div id="result"></div>
 </div>
 
 @section scripts{
-	<script type="text/javascript">
+	<script>
 
     $('#submit').on('click', function (e) {
         e.preventDefault();
@@ -17,7 +24,8 @@
             if (window.FormData !== undefined) {
                 var data = new FormData();
                 for (var x = 0; x < files.length; x++) {
-                    data.append("file" + x, files[x]);
+                	data.append("file" + x, files[x]);
+                	//$('[name="fileName"]').attr("value", files[x].name);
                 }
 
                 $.ajax({
@@ -27,7 +35,7 @@
                     processData: false,
                     data: data,
                     success: function (result) {
-                        alert(result);
+                    	$('#result').html(result);
                     },
                     error: function (xhr, status, p3) {
                         alert(xhr.responseText);
@@ -38,5 +46,23 @@
             }
         }
     });
+		@*$('#count').on('click', function (e) {
+			e.preventDefault();
+			var name = $('[name="fileName"]').attr("value");
+			$.ajax({
+				type: "POST",
+				url: '@Url.Action("WordCounting", "Home")',
+				contentType: false,
+				processData: false,
+				data: name,
+				success: function (result) {
+					alert(result);
+				},
+				error: function (xhr, status, p3) {
+					alert(xhr.responseText);
+				}
+			});
+				
+		});*@
 	</script>
 }

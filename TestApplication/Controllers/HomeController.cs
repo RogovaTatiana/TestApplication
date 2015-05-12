@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TestApplication.Models;
 
 namespace TestApplication.Controllers
 {
@@ -28,20 +29,29 @@ namespace TestApplication.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult Upload()
+		public ActionResult Upload()
 		{
+			string result = "Файл загружен";
 			foreach (string file in Request.Files)
 			{
+				var newFile = new FileData(new WordsCounting()); // Можно создать другой способ обработки и унаследовать его от IProcessing
 				var upload = Request.Files[file];
 				if (upload != null)
 				{
-					// получаем имя файла
 					string fileName = System.IO.Path.GetFileName(upload.FileName);
-					// сохраняем файл в папку Files в проекте
-					upload.SaveAs(Server.MapPath("~/Files/" + fileName));
+					upload.SaveAs(@"\Files\" + fileName);
+					newFile.FileName = fileName;
+					newFile.UploadDate = DateTime.Today;
+					newFile.FileSize = upload.ContentLength;
+					newFile.Processing();
 				}
+				ViewBag.Words = newFile.Words;
 			}
-			return Json("файл загружен");
+
+			ViewBag.result = result;
+			 
+			return PartialView("WordCounting");
+
 		}
 	}
 }
