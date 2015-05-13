@@ -240,9 +240,12 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="TestApplication.mdf" />
-    <Content Include="TestApplication_log.ldf">
+    <Content Include="App_Data\TestApplication.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\TestApplication_log.ldf">
       <DependentUpon>TestApplication.mdf</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -282,7 +285,7 @@
     <Content Include="Views\Home\WordCounting.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="Files\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

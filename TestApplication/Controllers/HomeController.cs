@@ -51,7 +51,8 @@ namespace TestApplication.Controllers
 				if (upload != null)
 				{
 					string fileName = Path.GetFileName(upload.FileName);
-					upload.SaveAs(@"\Files\" + fileName);
+					var dir = AppDomain.CurrentDomain.BaseDirectory + @"/Files/";
+					upload.SaveAs(dir + fileName);
 					newFile.FileName = fileName;
 					newFile.UploadDate = DateTime.Now;
 					newFile.FileSize = upload.ContentLength;
