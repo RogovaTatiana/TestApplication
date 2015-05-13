@@ -44,6 +44,9 @@ namespace TestApplication.Controllers
 		public ActionResult Upload()
 		{
 			string result = "Файл загружен";
+			string fullPath;
+			var dir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"Files");
+			Directory.CreateDirectory(dir);
 			foreach (string file in Request.Files)
 			{
 				var newFile = new FileData();
@@ -51,9 +54,9 @@ namespace TestApplication.Controllers
 				if (upload != null)
 				{
 					string fileName = Path.GetFileName(upload.FileName);
-					var dir = AppDomain.CurrentDomain.BaseDirectory + @"/Files/";
-					upload.SaveAs(dir + fileName);
-					newFile.FileName = fileName;
+					fullPath = Path.Combine(dir, fileName);
+					upload.SaveAs(fullPath);
+					newFile.FileName = fullPath;
 					newFile.UploadDate = DateTime.Now;
 					newFile.FileSize = upload.ContentLength;
 					Processing.Processing(newFile);

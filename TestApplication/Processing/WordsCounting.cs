@@ -18,9 +18,7 @@ namespace TestApplication
 			string[] stroka;
 			string fileName;
 			file.Words = new List<Word>();
-			Dictionary<string, List<string>> myDict = new Dictionary<string, List<string>>();
-			
-			fileName = @"\Files\" + file.FileName;
+			fileName = file.FileName;
 
 			FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
 			StreamReader sr = new StreamReader(fs);

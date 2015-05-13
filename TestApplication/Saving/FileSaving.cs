@@ -9,7 +9,9 @@ namespace TestApplication
 		public void Save(FileData file)
 		{
 			// сохранение в файл
-			string fileName = AppDomain.CurrentDomain.BaseDirectory + @"/Files/"+"result.txt";
+			var dir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Files");
+			Directory.CreateDirectory(dir);
+			var fileName = Path.Combine(dir, "result.txt");
 			var ww = new StreamWriter(fileName, true);
 			ww.WriteLine(file.FileName);
 			ww.WriteLine(String.Format("Размер файла: {0} байт", file.FileSize));
